@@ -7,7 +7,15 @@ newQuiz.addQuestions([
 	  , answer: 'En burger'
 	  , possibilities: ['En burger', 'En is', 'En sodavand']
 	}
+	,
+	{
+		text: 'Hvad lyder det som om man bestiller når man køber en Mac Mini?'
+	  , answer: 'En burger'	
+	  , possibilities: ['En burger', 'En is', 'En sodavand']
+	}
 ]);
+
+
 
 // this sets the background color of the master UIView (when there are no windows/tab groups on it)
 Titanium.UI.setBackgroundColor('#000');
@@ -34,7 +42,8 @@ var label1 = Titanium.UI.createLabel({
 	text:'Start quiz',
 	font:{fontSize:20,fontFamily:'Helvetica Neue'},
 	textAlign:'center',
-	width:'auto'
+	width:'auto',
+	height:22
 });
 
 var possibleView = Ti.UI.createView({
@@ -45,22 +54,19 @@ var possibleView = Ti.UI.createView({
 });
 
 label1.addEventListener('click', function(e){
-	/*Ti.API.debug(
-		newQuiz.eachQuestion(
-			function(el, i, a) {
-				Ti.API.debug(el);
-			}
-		)
-	);*/
-	label1.hide();
+	var label1Pos;
+	label1.text = newQuiz.getQuestion(0).text;
+	label1Top = label1.getTop(); //TODO: returns null!
+	console.log(label1.getTop());
 	win1.title = ['Første','Anden','Tredje','Fjerde'][0] + ' spørgsmål';
 	newQuiz.eachPossibility(0, function(el, i, a){
 		Ti.API.debug(el);
 		Ti.API.debug('pos:'+i);
-		var b = button(el, i*2);
-		b.addEventListener('click', function(a,b){
-			console.log(a, a.source, 'b', b);
-			win1.title = newQuiz.getQuestion(0).answer;
+		var b = button(el, i*2+label1Top);
+		b.addEventListener('click', function(a){
+			console.log(a, a.source);
+			console.log(a.source.title)
+			win1.title = newQuiz.getQuestion(0).answer == a.source.title ? 'Yep' : 'Nope';
 		});
 		possibleView.add(b);
 		

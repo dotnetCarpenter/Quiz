@@ -16,7 +16,7 @@ var Quiz = function() {
      * @return {Number} The index of the added question
      */
     this.addQuestion = function(question) {
-        return _question.push(question);
+        return _question.push(question); //TODO: possible 1-based need to take measure if cross-platform
     };
     /**
      * @method
@@ -60,8 +60,8 @@ Quiz.prototype.eachPossibility = function(questionIndex, fn) {
 	return this.getAllQuestion()[questionIndex].possibilities.forEach(fn);
 }
 
-// fix cross debug output TODO: multiple arguments to Ti debug
-this.console || (this.console = {}, console.log = Ti.API.debug);
+// fix cross debug output and add support for multiple arguments to Ti debug
+this.console || (this.console = {}, console.log = function(){ Ti.API.debug( Array.prototype.slice.call(arguments) ); });
 // Check if we're in a CommonJS environment
 if( typeof require == 'function' && typeof module == 'object' ) {
     exports['quiz'] = Quiz;
